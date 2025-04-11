@@ -1,0 +1,188 @@
+package my_project;
+import java.util.Scanner;
+
+class MyClass {
+	static Scanner userinput = new Scanner(System.in);
+	public static void main (String[] args){  
+		int classNum = promptInt("Enter how many courses you will give information on.");
+		
+		//make sure the arrays wont error on creation
+		if (classNum < 1) {
+			System.out.println("Error: courses number must be greater than 0.");
+			return;
+		}
+		
+		//create arrays
+		double[] classGrades = new double[classNum];
+		double[] classCredits = new double[classNum];
+		
+		System.out.println("");
+		
+		//loop over every needed course
+		for (int i = 0; i < classNum; i++) {
+			//infinite loop to be broken out of
+			while (true) {
+				//get grade using secondary function
+				classGrades[i] = getNumberGrade("Enter your grade in class " + (i+1) + " (as a letter or on a 4.0 scale):");
+				
+				//make sure the grade is correct
+				if (classGrades[i] <= 4 && classGrades[i] >= 0) {
+					break;
+				} else {
+					System.out.println("Error: grade not within 4.0 scale. Please enter a letter or a numerical grade between 0 and 4.");
+					System.out.println("");
+				}
+
+			}
+			
+			while (true) {
+				//get credits
+				classCredits[i] = promptInt("Enter the credits for class " + (i+1) + ":");
+				
+				//make sure the credits are correct
+				if (classCredits[i] >= 1) {
+					break;
+				} else {
+					System.out.println("Error: credits number must be positive. Please enter a number that is 1 or greater.");
+					System.out.println("");
+				}
+			}
+
+			System.out.println("");
+		}
+		
+		//compute and output GPA
+		double userGPA = computeGPA(classGrades, classCredits);
+		System.out.println("");
+		System.out.format("Your GPA is %.2f!", userGPA);
+		
+	}
+	private static double getNumberGrade(String message) {
+		double grade = 0;
+		
+		//loop until entered grade is acceptable
+		while (true) {
+			String stringGrade = promptString(message);
+			
+			//now, i know your directions said the user doesn't have to input letter grade
+			//they can still input numbers just fine
+			//but i wasn't sure how to use your conversion chart otherwise
+			
+			if (stringGrade.equals("A")) {
+				grade = 4;
+			} else if (stringGrade.equals("A-")) {
+				grade = 3.67;
+			} else if (stringGrade.equals("B+")) {
+				grade = 3.33;
+			} else if (stringGrade.equals("B")) {
+				grade = 3.00;
+			} else if (stringGrade.equals("B-")) {
+				grade = 2.67;
+			} else if (stringGrade.equals("C+")) {
+				grade = 2.33;
+			} else if (stringGrade.equals("C")) {
+				grade = 2.00;
+			} else if (stringGrade.equals("C-")) {
+				grade = 2.67;
+			} else if (stringGrade.equals("D+")) {
+				grade = 1.33;
+			} else if (stringGrade.equals("D")) {
+				grade = 1.00;
+			} else if (stringGrade.equals("D-")) {
+				grade = 0.67;
+			} else if (stringGrade.equals("F")) {
+				grade = 0.00;
+			} else {
+				try {
+					//check if it's a numerical entry
+					//if it isn't, it errors
+					grade = Double.parseDouble(stringGrade);
+					
+				} catch (Exception e) {
+					System.out.println("Error: input neither number or letter grade.");
+					System.out.println("");
+					//continue the loop
+					continue;
+				}
+			}
+			
+			//if the loop was not explicitly continued, break out of it
+			break;
+		}
+		
+		//grade is acceptable now, return it
+		return grade;
+	}
+	static double computeGPA (double [] grades, double [] credits){
+		//suer easy with extra functions
+		double GPA = sumProducts(grades, credits)/sumArray(credits);
+		return GPA;
+	}
+	//some functions to do basic math
+	public static double sumArray(double[] array) {
+		double sum = 0;
+		
+		for (int i = 0; i < array.length; i++) {
+			sum += array[i];
+		}
+		
+		return sum;
+	}
+	public static double sumProducts(double[] array1, double[] array2) {
+		double productSum = 0;
+		
+		int length1 = array1.length;
+		int length2 = array2.length;
+		
+		//pick the smaller of the two lengths, so we never run into an out of bounds error
+		int inputLength = length1; 
+		if (length1 > length2) {inputLength = length2;}
+			
+		for (int i = 0; i < inputLength; i++) {
+			double product = array1[i] * array2[i];
+			productSum += product;
+		}
+		
+		return productSum;
+	}
+    //helper functions since my user input- you get it by now
+    public static String promptString(String message) {
+    	System.out.format("%s \n>>", message);
+    	return userinput.nextLine();
+    }
+    public static int promptInt(String message) {
+    	int input = 0;
+    	String errorMsg = "Error: That is not an integer. Please enter a valid number with no decimal component.";
+
+    	try {
+	    	System.out.format("%s \n>>", message);
+	    	input = userinput.nextInt();
+	    	
+	    	userinput.nextLine();
+	    	return input;
+    	} catch (Exception e) {
+	    	System.out.println(errorMsg);
+	    	System.out.println("");
+	    	
+	    	userinput.nextLine();
+	    	
+    	}
+    	
+    	while (true) {
+    		try {
+		    	System.out.format("%s \n>>", message);
+		    	input = userinput.nextInt();
+		    	
+		    	userinput.nextLine();
+		    	return input;
+    		} catch (Exception e2) { 
+		    	System.out.println(errorMsg);
+		    	System.out.println("");
+		    	
+		    	userinput.nextLine();
+		    	continue;
+    		}
+    	}
+
+    }
+}

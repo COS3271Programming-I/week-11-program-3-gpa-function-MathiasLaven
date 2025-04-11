@@ -1,0 +1,20 @@
+Enter how many courses you will give information on. 
+>>3
+
+Enter your grade in class 1 (as a letter or on a 4.0 scale): 
+>>3.67
+Enter the credits for class 1: 
+>>4
+
+Enter your grade in class 2 (as a letter or on a 4.0 scale): 
+>>D-
+Enter the credits for class 2: 
+>>2
+
+Enter your grade in class 3 (as a letter or on a 4.0 scale): 
+>>3.65
+Enter the credits for class 3: 
+>>3
+
+
+Your GPA is 3.00!
